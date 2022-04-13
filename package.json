@@ -1,0 +1,26 @@
+{
+  "name": "soberana-telegram-bot",
+  "version": "1.0.0",
+  "description": "Bot do telegram para o coletivo Soberana",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Azhariel/soberana-telegram-bot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Azhariel/soberana-telegram-bot/issues"
+  },
+  "homepage": "https://github.com/Azhariel/soberana-telegram-bot#readme",
+  "keywords": [],
+  "dependencies": {
+    "telegraf": "^4.7.0"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.0"
+  }
+}
