@@ -1,11 +1,15 @@
 require('dotenv').config();
-const { Telegraf } = require('telegraf');
-const apiToken = process.env.API_TOKEN;
+const axios = require('axios');
 
-const bot = new Telegraf(apiToken);
+const { API_TOKEN, API_URL, TELEGRAM_CHAT_ID } = process.env;
 
+async function sendMessage(text) {
+    const url = `${API_URL}${API_TOKEN}/sendMessage`;
+    const data = {
+        chat_id: TELEGRAM_CHAT_ID,
+        text
+    };
+    await axios.post(url, data);
+}
 
-bot.start((content) => content.reply('Comunismo vencerá!'));
-
-bot.launch();
-console.log('🤖 rodando');
+sendMessage('Teste básico!');
