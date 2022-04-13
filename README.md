@@ -3,7 +3,7 @@ Servidor do Bot de Telegram do coletivo marxista-leninista Soberana.
 
 # To do
 - [ ] Enviar mensagens a partir de comandos do usuário
-  - [ ]  /start
+  - [x]  /start
   - [ ]  /redes
   - [ ]  ...
 - [ ] Enviar mensagens a partir de estímulo externo (webhook)
