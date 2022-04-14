@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { google } = require('googleapis');
+const { sendMessage } = require('../methods/telegram');
 
 const { GOOGLE_REDIRECT_URL,
     GOOGLE_CALENDAR_CLIENT_ID,
@@ -55,7 +56,6 @@ async function getToken() {
     oauth2Client.setCredentials(tokens);
 }
 
-
 async function getEvents() {
     const res = await calendar.events.list({
         calendarId: GOOGLE_CALENDAR_ID,
@@ -64,9 +64,12 @@ async function getEvents() {
         timeMax: '2022-04-13T23:59:00-03:00',
         timeMin: '2022-04-13T00:00:01-03:00'
     });
+    let livesToday = [];
     for (let lives of res.data.items) {
         console.log(lives.summary);
+        livesToday.push(lives.summary);
     }
+    sendMessage(livesToday);
 }
 
-getEvents();
+// getEvents();
