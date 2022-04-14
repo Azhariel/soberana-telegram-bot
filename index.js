@@ -9,8 +9,6 @@ const app = express();
 
 const redirectURL = '/auth/google';
 
-const code = '4/0AX4XfWjuubSWth2ShMafYWBCg-nbDx0FabxF5JYfn9JfnccLaEN3a3_6TgU7L8igYqnuXg';
-
 // Up the server
 function main() {
     app.listen(port, () => {
