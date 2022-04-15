@@ -33,13 +33,13 @@ function formatTime(livesToday) {
 function formatSchedule(schedule) {
     let dia = getToday();
     dia = `${String(dia.getDate()).padStart(2, '0')}/${String(dia.getMonth()).padStart(2, '0')}/${dia.getFullYear()}`;
-    let formattedSchedule = `** Lives de Hoje \\(${dia}\\): **\n`;
+    let formattedSchedule = `*Lives de Hoje \\(${dia}\\):*\n`;
     for (let event in schedule) {
         let horarios = schedule[event];
         cleanEvent = event.replace('-', '\\-');
         formattedSchedule += `\\[${horarios[0]}\\] \\- \\[${horarios[1]}\\]: ${cleanEvent}\n`;
     }
-    formattedSchedule += `\n__[Siga os canais aqui\\!](https://j\\.mp/twitchSoberana)__`
+    formattedSchedule += `\n_[Siga os canais aqui\\!](https://j\\.mp/twitchSoberana)_`
     console.log(formattedSchedule);
     sendMessage(formattedSchedule);
 }
