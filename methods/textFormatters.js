@@ -14,7 +14,7 @@ function getToday() {
 
 // Format date day/month/year as YYYY-MM-DD, useful for googleCalendar's getEvents function.
 function formatDate(today) {
-    return (`${today.getFullYear()}-${String(today.getMonth()).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`);
+    return (`${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`);
 }
 
 // ? Format time -> might refactor to be a part of formatSchedule
