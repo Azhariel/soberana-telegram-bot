@@ -32,7 +32,7 @@ function formatTime(livesToday) {
 // Given an object, format as table to display on messages
 function formatSchedule(schedule) {
     let dia = getToday();
-    dia = `${String(dia.getDate()).padStart(2, '0')}/${String(dia.getMonth()).padStart(2, '0')}/${dia.getFullYear()}`;
+    dia = `${String(dia.getDate()).padStart(2, '0')}/${String(dia.getMonth() + 1).padStart(2, '0')}/${dia.getFullYear()}`;
     let formattedSchedule = `*Lives de Hoje \\(${dia}\\):*\n`;
     for (let event in schedule) {
         let horarios = schedule[event];
