@@ -1,6 +1,7 @@
 require('dotenv').config();
 const { google } = require('googleapis');
-const { sendMessage } = require('../methods/telegram');
+// const { formatTime } = require('../methods/textFormatters');
+// const { sendMessage } = require('../methods/telegram');
 
 const { GOOGLE_REDIRECT_URL,
     GOOGLE_CALENDAR_CLIENT_ID,
@@ -36,8 +37,11 @@ google.options({
     auth: oauth2Client
 });
 
-//  generate a url that asks permissions for Google Calendar scope
-// ! the code may need to be decoded using decodeURIComponent('code');
+/* 
+* Generate a url that asks permissions for Google Calendar scope
+* A code is generated after authorization flow by the user, and is returned as url query "code".
+! This code may need to be decoded using decodeURIComponent('code');
+*/
 const url = oauth2Client.generateAuthUrl({
     // 'online' (default) or 'offline' (gets refresh_token)
     access_type: 'offline',
@@ -56,11 +60,21 @@ async function getToken() {
     oauth2Client.setCredentials(tokens);
 }
 
-/*
+/**
+* Gets refreshed token, sets as credentials.
+*/
+async function getRefreshedToken() {
+    const refreshedToken = await oauth2Client.getAccessToken();
+    oauth2Client.setCredentials(refreshedToken.res.data);
+    console.log(`Refresh token status: ${refreshedToken.res.status} ${refreshedToken.res.statusText}`);
+}
+
+/**
 * Gets the events, given a date.
-Date must be formatted as: YYYY-MM-DD.
+* Date must be formatted as: YYYY-MM-DD.
 */
 async function getEvents(date) {
+    await getRefreshedToken();
     const res = await calendar.events.list({
         calendarId: GOOGLE_CALENDAR_ID,
         singleEvents: true,
@@ -72,10 +86,9 @@ async function getEvents(date) {
     for (let lives of res.data.items) {
         livesToday[lives.summary] = [lives.start.dateTime, lives.end.dateTime];
     }
-    console.log(livesToday);
-    // TODO-> sendo to text formatter, then formatter sends to Telegram
-    // sendMessage(livesToday);
+    // console.log(livesToday);
+    return (livesToday);
 }
-getEvents('2022-04-14');
+// getEvents('2022-04-14');
 
 module.exports = { getEvents };
