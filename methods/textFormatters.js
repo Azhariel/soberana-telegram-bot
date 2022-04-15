@@ -1,4 +1,5 @@
 const { sendMessage } = require('./telegram');
+const { getEvents } = require('../api/googleCalendar');
 
 // * sample obj
 // const livesToday = {
@@ -31,6 +32,7 @@ function formatTime(livesToday) {
 
 /** 
 * Given an object, format as table to display on messages
+* Almost every special character must be escaped with two \\. Refer to Telegram API documentation.
 * @param {object} schedule Object of events, each key is the event's name with an array as value containing [start time, end time] (as HH:MM).
 */
 function formatSchedule(schedule) {
@@ -47,4 +49,12 @@ function formatSchedule(schedule) {
     sendMessage(formattedSchedule);
 }
 
+async function postTodaysEvents() {
+    const today = getToday();
+    const todayLives = await getEvents(formatDate(today));
+    formatTime(todayLives);
+}
+
+postTodaysEvents();
+module.exports = { formatTime };
 // formatTime(livesToday);
