@@ -56,20 +56,26 @@ async function getToken() {
     oauth2Client.setCredentials(tokens);
 }
 
-async function getEvents() {
+/*
+* Gets the events, given a date.
+Date must be formatted as: YYYY-MM-DD.
+*/
+async function getEvents(date) {
     const res = await calendar.events.list({
         calendarId: GOOGLE_CALENDAR_ID,
         singleEvents: true,
         orderBy: 'startTime',
-        timeMax: '2022-04-13T23:59:00-03:00',
-        timeMin: '2022-04-13T00:00:01-03:00'
+        timeMax: `${date}T23:59:00-03:00`,
+        timeMin: `${date}T00:00:01-03:00`
     });
-    let livesToday = [];
+    let livesToday = {};
     for (let lives of res.data.items) {
-        console.log(lives.summary);
-        livesToday.push(lives.summary);
+        livesToday[lives.summary] = [lives.start.dateTime, lives.end.dateTime];
     }
-    sendMessage(livesToday);
+    console.log(livesToday);
+    // TODO-> sendo to text formatter, then formatter sends to Telegram
+    // sendMessage(livesToday);
 }
+getEvents('2022-04-14');
 
-// getEvents();
+module.exports = { getEvents };
