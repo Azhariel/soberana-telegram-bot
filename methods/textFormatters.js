@@ -29,7 +29,10 @@ function formatTime(livesToday) {
     formatSchedule(livesToday);
 }
 
-// Given an object, format as table to display on messages
+/** 
+* Given an object, format as table to display on messages
+* @param {object} schedule Object of events, each key is the event's name with an array as value containing [start time, end time] (as HH:MM).
+*/
 function formatSchedule(schedule) {
     let dia = getToday();
     dia = `${String(dia.getDate()).padStart(2, '0')}/${String(dia.getMonth() + 1).padStart(2, '0')}/${dia.getFullYear()}`;
