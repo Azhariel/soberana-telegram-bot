@@ -2,6 +2,9 @@
 ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
 
 Servidor do Bot de Telegram do coletivo marxista-leninista Soberana.
+O objetivo do bot é postar em um canal de anúncios do Telegram, servindo como um agregador
+de informações. O bot deve postar quando membros iniciam lives na Twitch e postam vídeos no Youtube e TikTok,
+além de postar diariamente as lives e eventos agendadas para aquele dia a partir do Google Calendar.
 
 # To do
 ![Telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)
