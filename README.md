@@ -28,3 +28,5 @@ Servidor do Bot de Telegram do coletivo marxista-leninista Soberana.
 - [Telegram API](https://core.telegram.org/bots)
 - [YouTube Webhooks](https://developers.google.com/youtube/v3/guides/push_notifications)
 - [TikTok API](https://developers.tiktok.com/doc)
+- [Google Calendar API](https://developers.google.com/calendar/api/v3/reference)
+- [Twitch API](https://dev.twitch.tv/docs/api)
