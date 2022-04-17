@@ -19,6 +19,7 @@
   "keywords": [],
   "dependencies": {
     "axios": "^0.26.1",
+    "crypto": "^1.0.1",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "googleapis": "^100.0.0"
