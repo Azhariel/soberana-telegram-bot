@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const https = require('https');
 const fs = require('fs');
 const { sendMessage } = require('./methods/telegram');
+const { formatStreamOnline } = require('./methods/textFormatters');
 
 // Twitch
 const { TWITCH_SECRET_KEY } = process.env;
@@ -87,7 +88,8 @@ secureApp.post('/eventsub', (req, res) => {
 
         if (MESSAGE_TYPE_NOTIFICATION === req.headers[MESSAGE_TYPE]) {
             // TODO: Do something with the event's data. -> Send to telegram
-            sendMessage(`${notification.event.broadcaster_user_name} está online: https://twitch\\.tv/${notification.event.broadcaster_user_login}`);
+            let streamOnline = notification.event;
+            formatStreamOnline(streamOnline);
             console.log(`Event type: ${notification.subscription.type}`);
             console.log(JSON.stringify(notification.event, null, 4));
 
