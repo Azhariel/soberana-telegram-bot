@@ -38,6 +38,15 @@ além de postar diariamente as lives e eventos agendadas para aquele dia a parti
   - [ ] Receber o nome do vídeo (?), canal e link
   - [ ] Enviar no telegram
 
+# Desafios
+## Google e OAuth2
+As APIs da Google utilizam OAuth2 para autorização, que envolvem um método manual para autorização inicial e a manutenção de um token de acesso com um token de atualização (access token e refresh token respectivamente). Atualmente, ambos tokens são hardcoded em variáveis de ambiente (.env), o que não é uma solução a longo prazo, pois mesmo podendo conseguir 'infinitos' tokens de acesso através do token de atualização, eventualmente o token de atualização também expira e deve ser renovado.
+O servidor precisa, de alguma forma segura, armazenar ambos os tokens e atualiza-los no banco de dados quando os mesmos são atualizados pela lógica do servidor.
+
+## Twitch e SSL
+Dada a mudança no sistema de webhooks da Twitch (utilizando agora os endpoints EventSub), há obrigatoriedade do servidor em utilizar o protocolo SSL - o que, por sua vez, requer que o domínio possua o devido certificado de autoridade. Em fase de testes, estou utilizando [ngrok](https://ngrok.com/), que cria uma URL temporária com o devido certificado, mas essa solução é inviável a nível de produção - tanto por não rodar mais em localhost, quanto por a URL externa ser temporária na versão gratuita.
+Uma das alternativas, que exigem mais estudo, é alguma forma de hospedar na AWS com suporte a certificado SSL, mas não possuo expierência nesse tipo de deploy.
+
 # Links Úteis
 - [Telegram API](https://core.telegram.org/bots)
 - [YouTube Webhooks](https://developers.google.com/youtube/v3/guides/push_notifications)
