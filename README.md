@@ -6,6 +6,13 @@ O objetivo do bot é postar em um canal de anúncios do Telegram, servindo como 
 de informações. O bot deve postar quando membros iniciam lives na Twitch e postam vídeos no Youtube e TikTok,
 além de postar diariamente as lives e eventos agendadas para aquele dia a partir do Google Calendar.
 
+# Table of Contents
+- [To Do](#to-do)
+- [Desafios](#desafios)
+  - [Google e OAuth2](#google-e-oauth2)
+  - [Twitch e SSL](#twitch-e-ssl)
+- [Links Úteis](#links-úteis)
+
 # To do
 ![Telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)
 - [x] Enviar mensagens para um canal especificado no Telegram
