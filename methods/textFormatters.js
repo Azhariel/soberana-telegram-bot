@@ -45,7 +45,7 @@ function formatSchedule(schedule) {
         formattedSchedule += `\\[${horarios[0]}\\] \\- \\[${horarios[1]}\\]: ${cleanEvent}\n`;
     }
     formattedSchedule += `\n_[Siga os canais aqui\\!](https://j\\.mp/twitchSoberana)_`
-    console.log(formattedSchedule);
+    console.log(`Sending schedule for ${dia}..`);
     sendMessage(formattedSchedule);
 }
 
@@ -55,6 +55,11 @@ async function postTodaysEvents() {
     formatTime(todayLives);
 }
 
-postTodaysEvents();
-module.exports = { formatTime };
-// formatTime(livesToday);
+function formatStreamOnline(stream) {
+    // TODO: Chamar pegarTituloDaLive para adicionar à formatação
+    let formattedStreamOnline = `*${stream.broadcaster_user_name}* está online\\!\n\n_[Acompanhe ao vivo aqui\\!](https://twitch\\.tv/${stream.broadcaster_user_login})_`;
+    sendMessage(formattedStreamOnline);
+}
+
+// postTodaysEvents();
+module.exports = { formatTime, formatStreamOnline };
