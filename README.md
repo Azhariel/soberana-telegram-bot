@@ -11,6 +11,7 @@ além de postar diariamente as lives e eventos agendadas para aquele dia a parti
 - [Desafios](#desafios)
   - [Google e OAuth2](#google-e-oauth2)
   - [Twitch e SSL](#twitch-e-ssl)
+  - [Twitch e Subscribed Events](#twitch-e-subscribed-events)
 - [Links Úteis](#links-úteis)
 
 # To do
