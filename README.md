@@ -34,9 +34,9 @@ além de postar diariamente as lives e eventos agendadas para aquele dia a parti
   - [ ] Formatar as informações e postar no Telegram
 
 ![Twitch](https://img.shields.io/badge/Twitch-%239146FF.svg?style=for-the-badge&logo=Twitch&logoColor=white)
-- [ ] Integração com Twitch
+- [x] Integração com Twitch
   - [x] Ativar quando um canal entrar ao vivo
-  - [ ] Formatar o nome do canal, título da live e link
+  - [x] Formatar o nome do canal, título da live e link
   - [x] Enviar no telegram
 
 ![TikTok](https://img.shields.io/badge/TikTok-%23000000.svg?style=for-the-badge&logo=TikTok&logoColor=white)
