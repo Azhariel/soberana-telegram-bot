@@ -51,10 +51,14 @@ async function subscribeToStreamOnline(userId) {
 
 async function getSubscribedEvents() {
     try {
+        let listOfSubscribedEvents = [];
         await instance.get('/eventsub/subscriptions').then(response => {
-            console.log(response.data.data.forEach(element => {
-                console.log(`Status: ${element.status} | ID: ${element.id} | UserID: ${element.condition.broadcaster_user_id}`)
-            }));
+            response.data.data.forEach(element => {
+                console.log(`Status: ${element.status} | ID: ${element.id} | UserID: ${element.condition.broadcaster_user_id}`);
+                listOfSubscribedEvents.push(element.id);
+            });
+            console.log(listOfSubscribedEvents);
+            console.log(`Total: ${listOfSubscribedEvents.length}`)
         });
     } catch (error) {
         console.error(error);
@@ -83,7 +87,6 @@ async function deleteSubscribedEvent(eventId) {
     }
 }
 
-// TODO: Outro GET para pegar o título da live (https://dev.twitch.tv/docs/api/reference#get-channel-information)
 async function getChannelInfo(userId) {
     try {
         const channelInfo = await instance.get(`/channels?broadcaster_id=${userId}`);
@@ -97,19 +100,33 @@ async function getChannelInfo(userId) {
 }
 
 
+// TODO Move all of this to tests
 // getUsers('azhariel&login=c0muninja&login=comuna_paint&login=dadosrevolucionarios&login=0froggy&login=gamerdeesquerda&login=historiapublica&login=historiatopia&login=lucaszawacki&login=ponzuzuju&login=vinnydays');
 // getSubscribedEvents();
 // subscribeToStreamOnline('40463426');
 // deleteSubscribedEvent('1ee178ba-2cb1-4275-b630-ae0a75dd513b');
 
+// * Holding all of Soberana members IDs, useful for subscribing to events when ngrok resets
 // soberanaIds = [146148785, 590931212, 539161835, 557225670, 40463426, 30865255, 694725890, 502441638, 127274602, 498425402, 49750261]
-// done 18/04/22
 // soberanaIds.forEach((cur, ind, arr) => { subscribeToStreamOnline(cur) });
 
-// async function testinho() {
-//     let testinho = await getChannelInfo('557225670');
-//     console.log("🚀 ~ file: twitch.js ~ line 110 ~ testinho", testinho)
-// }
-// testinho();
+// * Delete list of events (useful when ngrok resets, since events are bound to callback url)
+// let eventsToDelete = [
+//     'b5a15f4b-88f1-4669-b040-c78a08b5c168',
+//     '1608a9c2-ed01-407e-b692-76737fc69b95',
+//     '9d3bac92-7a75-4e2e-83ae-a99e8d21e0f6',
+//     '65657981-840c-441a-ae48-ec4293cad255',
+//     'b85c9c8d-badc-4eb2-b158-c0b0c48d3b4a',
+//     '1c52c66e-6ac3-4d49-83f8-6b1634ecab52',
+//     '9e8d7ca7-6128-4c16-9509-134d615501bf',
+//     'e1d02dfd-654b-4580-9a4b-0e82bc0b26da',
+//     'f3d965f7-e209-41ba-ae65-e31b459717b0',
+//     'fca5a976-da52-4d0f-b40e-d92245d4455c',
+//     '477c99bf-4f9f-4f08-bef2-64237910059c'
+// ];
+
+// eventsToDelete.forEach(e => {
+//     deleteSubscribedEvent(e);
+// })
 
 module.exports = { getChannelInfo };
