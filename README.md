@@ -56,6 +56,9 @@ Dada a mudança no sistema de webhooks da Twitch (utilizando agora os endpoints 
 
 Uma das alternativas, que exigem mais estudo, é alguma forma de hospedar na AWS com suporte a certificado SSL, mas não possuo expierência nesse tipo de deploy.
 
+## Twitch e Subscribed Events
+Para subscrever a eventos na Twitch, é enviado uma requisição POST incluindo a URL de callback para esses eventos. Enquanto se utilizar URL variável para expor o servidor via ngrok, mesmo implementada através do próprio node.js (e, portanto, atualizável na lógica do código), a mudança de URL deve também pegar todos eventos já subscritos, desescrever-se e reescrever-se passando a nova URL. Todas essas funções já estão implementadas em algum nível no código, mas é necessário criar essa linha de ligação entre elas. 
+
 # Links Úteis
 - [Telegram API](https://core.telegram.org/bots)
 - [YouTube Webhooks](https://developers.google.com/youtube/v3/guides/push_notifications)
