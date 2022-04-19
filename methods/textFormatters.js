@@ -1,5 +1,6 @@
 const { sendMessage } = require('./telegram');
 const { getEvents } = require('../api/googleCalendar');
+const { getChannelInfo } = require('../api/twitch');
 
 // * sample obj
 // const livesToday = {
@@ -41,7 +42,7 @@ function formatSchedule(schedule) {
     let formattedSchedule = `*Lives de Hoje \\(${dia}\\):*\n`;
     for (let event in schedule) {
         let horarios = schedule[event];
-        cleanEvent = event.replace('-', '\\-');
+        cleanEvent = event.replace(/(-)/g, '\\-');
         formattedSchedule += `\\[${horarios[0]}\\] \\- \\[${horarios[1]}\\]: ${cleanEvent}\n`;
     }
     formattedSchedule += `\n_[Siga os canais aqui\\!](https://j\\.mp/twitchSoberana)_`
@@ -55,11 +56,27 @@ async function postTodaysEvents() {
     formatTime(todayLives);
 }
 
-function formatStreamOnline(stream) {
-    // TODO: Chamar pegarTituloDaLive para adicionar à formatação
-    let formattedStreamOnline = `*${stream.broadcaster_user_name}* está online\\!\n\n_[Acompanhe ao vivo aqui\\!](https://twitch\\.tv/${stream.broadcaster_user_login})_`;
+async function formatStreamOnline(stream) {
+    let channelInfo = await getChannelInfo(stream.broadcaster_user_id);
+
+    let gameName = channelInfo.game_name.replace(/(-)/g, '\\-').replace(/(\.)/g, '\\.').replace(/(!)/g, '\\!').replace(/(\|)/g, '\\|');
+    let channelTitle = channelInfo.title.replace(/(-)/g, '\\-').replace(/(\.)/g, '\\.').replace(/(!)/g, '\\!').replace(/(\|)/g, '\\|');
+
+    let formattedStreamOnline =
+        `*${stream.broadcaster_user_name}* está online\\!\n*Jogando:* ${gameName}\n*Título:* ${channelTitle}\n\n_[Acompanhe ao vivo aqui\\!](https://twitch\\.tv/${stream.broadcaster_user_login})_`;
+
     sendMessage(formattedStreamOnline);
 }
 
 // postTodaysEvents();
 module.exports = { formatTime, formatStreamOnline };
+
+// let testStreamOnlineObject = {
+//     "id": "46206209917",
+//     "broadcaster_user_id": "590931212",
+//     "broadcaster_user_login": "historiapublica",
+//     "broadcaster_user_name": "HistoriaPublica",
+//     "type": "live",
+//     "started_at": "2022-04-18T18:34:23Z"
+// }
+// formatStreamOnline(testStreamOnlineObject);
