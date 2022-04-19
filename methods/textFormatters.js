@@ -59,8 +59,9 @@ async function postTodaysEvents() {
 async function formatStreamOnline(stream) {
     let channelInfo = await getChannelInfo(stream.broadcaster_user_id);
 
-    let gameName = channelInfo.game_name.replace(/(-)/g, '\\-').replace(/(\.)/g, '\\.').replace(/(!)/g, '\\!').replace(/(\|)/g, '\\|');
-    let channelTitle = channelInfo.title.replace(/(-)/g, '\\-').replace(/(\.)/g, '\\.').replace(/(!)/g, '\\!').replace(/(\|)/g, '\\|');
+    // ! TODO refactor chain of replaces into coherent function
+    let gameName = channelInfo.game_name.replace(/(-)/g, '\\-').replace(/(\.)/g, '\\.').replace(/(!)/g, '\\!').replace(/(\|)/g, '\\|').replace(/(\()/g, '\\(').replace(/(\))/g, '\\)');
+    let channelTitle = channelInfo.title.replace(/(-)/g, '\\-').replace(/(\.)/g, '\\.').replace(/(!)/g, '\\!').replace(/(\|)/g, '\\|').replace(/(\()/g, '\\(').replace(/(\))/g, '\\)');
 
     let formattedStreamOnline =
         `*${stream.broadcaster_user_name}* está online\\!\n*Jogando:* ${gameName}\n*Título:* ${channelTitle}\n\n_[Acompanhe ao vivo aqui\\!](https://twitch\\.tv/${stream.broadcaster_user_login})_`;
@@ -72,11 +73,11 @@ async function formatStreamOnline(stream) {
 module.exports = { formatTime, formatStreamOnline };
 
 // let testStreamOnlineObject = {
-//     "id": "46206209917",
-//     "broadcaster_user_id": "590931212",
-//     "broadcaster_user_login": "historiapublica",
-//     "broadcaster_user_name": "HistoriaPublica",
+//     "id": "46215275005",
+//     "broadcaster_user_id": "502441638",
+//     "broadcaster_user_login": "ponzuzuju",
+//     "broadcaster_user_name": "PonzuzuJu",
 //     "type": "live",
-//     "started_at": "2022-04-18T18:34:23Z"
+//     "started_at": "2022-04-19T20:00:07Z"
 // }
 // formatStreamOnline(testStreamOnlineObject);
