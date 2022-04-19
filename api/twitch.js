@@ -1,3 +1,5 @@
+const { response } = require('express');
+
 require('dotenv').config();
 const axios = require('axios').default;
 
@@ -49,8 +51,8 @@ async function subscribeToStreamOnline(userId) {
 
 async function getSubscribedEvents() {
     try {
-        await instance.get('/eventsub/subscriptions').then(reponse => {
-            console.log(reponse.data.data.forEach(element => {
+        await instance.get('/eventsub/subscriptions').then(response => {
+            console.log(response.data.data.forEach(element => {
                 console.log(`Status: ${element.status} | ID: ${element.id} | UserID: ${element.condition.broadcaster_user_id}`)
             }));
         });
@@ -82,6 +84,18 @@ async function deleteSubscribedEvent(eventId) {
 }
 
 // TODO: Outro GET para pegar o título da live (https://dev.twitch.tv/docs/api/reference#get-channel-information)
+async function getChannelInfo(userId) {
+    try {
+        const channelInfo = await instance.get(`/channels?broadcaster_id=${userId}`);
+        console.log("🚀 ~ file: twitch.js ~ line 90 ~ getChannelInfo ~ channelInfo", channelInfo.data.data[0])
+        return channelInfo.data.data[0];
+
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 
 // getUsers('azhariel&login=c0muninja&login=comuna_paint&login=dadosrevolucionarios&login=0froggy&login=gamerdeesquerda&login=historiapublica&login=historiatopia&login=lucaszawacki&login=ponzuzuju&login=vinnydays');
 // getSubscribedEvents();
@@ -91,3 +105,11 @@ async function deleteSubscribedEvent(eventId) {
 // soberanaIds = [146148785, 590931212, 539161835, 557225670, 40463426, 30865255, 694725890, 502441638, 127274602, 498425402, 49750261]
 // done 18/04/22
 // soberanaIds.forEach((cur, ind, arr) => { subscribeToStreamOnline(cur) });
+
+// async function testinho() {
+//     let testinho = await getChannelInfo('557225670');
+//     console.log("🚀 ~ file: twitch.js ~ line 110 ~ testinho", testinho)
+// }
+// testinho();
+
+module.exports = { getChannelInfo };
