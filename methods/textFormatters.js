@@ -56,12 +56,34 @@ async function postTodaysEvents() {
     formatTime(todayLives);
 }
 
+function characterEscaper(text) {
+    text.replace(/(-)/g, '\\-')
+        .replace(/(\.)/g, '\\.')
+        .replace(/(!)/g, '\\!')
+        .replace(/(\|)/g, '\\|')
+        .replace(/(\()/g, '\\(')
+        .replace(/(\))/g, '\\)')
+        .replace(/(\*)/g, '\\*')
+        .replace(/(\+)/g, '\\+')
+        .replace(/(\[)/g, '\\[')
+        .replace(/(\])/g, '\\]')
+        .replace(/(_)/g, '\\_')
+        .replace(/~/g, '\\~')
+        .replace(/`/g, '\\`')
+        .replace(/>/g, '\\>')
+        .replace(/#/g, '\\#')
+        .replace(/=/g, '\\=')
+        .replace(/{/g, '\\{')
+        .replace(/}/g, '\\}')
+
+    return text;
+}
+
 async function formatStreamOnline(stream) {
     let channelInfo = await getChannelInfo(stream.broadcaster_user_id);
 
-    // ! TODO refactor chain of replaces into coherent function
-    let gameName = channelInfo.game_name.replace(/(-)/g, '\\-').replace(/(\.)/g, '\\.').replace(/(!)/g, '\\!').replace(/(\|)/g, '\\|').replace(/(\()/g, '\\(').replace(/(\))/g, '\\)').replace(/(\*)/g, '\\*').replace(/(\+)/g, '\\+').replace(/(\[)/g, '\\[').replace(/(\])/g, '\\]');
-    let channelTitle = channelInfo.title.replace(/(-)/g, '\\-').replace(/(\.)/g, '\\.').replace(/(!)/g, '\\!').replace(/(\|)/g, '\\|').replace(/(\()/g, '\\(').replace(/(\))/g, '\\)').replace(/(\*)/g, '\\*').replace(/(\+)/g, '\\+').replace(/(\[)/g, '\\[').replace(/(\])/g, '\\]');
+    let gameName = characterEscaper(channelInfo.game_name);
+    let channelTitle = characterEscaper(channelInfo.title);
 
     let formattedStreamOnline =
         `*${stream.broadcaster_user_name}* está online\\!\n*Jogando:* ${gameName}\n*Título:* ${channelTitle}\n\n_[Acompanhe ao vivo aqui\\!](https://twitch\\.tv/${stream.broadcaster_user_login})_`;
