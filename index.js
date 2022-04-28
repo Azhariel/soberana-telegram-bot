@@ -1,41 +1,69 @@
-// Imports
+// * Imports
 require('dotenv').config();
 const express = require('express');
 const crypto = require('crypto');
 const https = require('https');
 const fs = require('fs');
-const { sendMessage } = require('./methods/telegram');
+const ngrok = require('ngrok');
 const { formatStreamOnline } = require('./methods/textFormatters');
+const { getSubscribedEvents, deleteSubscribedEvent, subscribeToStreamOnline } = require('./api/twitch');
 
-// Twitch
-const { TWITCH_SECRET_KEY } = process.env;
+// * .env
+const { TWITCH_SECRET_KEY, NGROK_AUTHTOKEN } = process.env;
+
+// * Twitch
 // Notification request headers
 const TWITCH_MESSAGE_ID = 'Twitch-Eventsub-Message-Id'.toLowerCase();
 const TWITCH_MESSAGE_TIMESTAMP = 'Twitch-Eventsub-Message-Timestamp'.toLowerCase();
 const TWITCH_MESSAGE_SIGNATURE = 'Twitch-Eventsub-Message-Signature'.toLowerCase();
 const MESSAGE_TYPE = 'Twitch-Eventsub-Message-Type'.toLowerCase();
-
 // Notification message types
 const MESSAGE_TYPE_VERIFICATION = 'webhook_callback_verification';
 const MESSAGE_TYPE_NOTIFICATION = 'notification';
 const MESSAGE_TYPE_REVOCATION = 'revocation';
-
 // Prepend this string to the HMAC that's created from the message
 const HMAC_PREFIX = 'sha256=';
 
-
+// * Server
 const port = 4000;
 const securePort = 443;
 const app = express();
 const secureApp = express();
-
 // Need raw message body for signature verification
 secureApp.use(express.raw({
     type: 'application/json'
 }));
 
+
+async function startNgrok() {
+    const url = await ngrok.connect(securePort, { authtoken: NGROK_AUTHTOKEN });
+    console.log(`🚀 Ngrok on ${url}`);
+    // Need to reset subscribed events when ngrok URL resets
+    resetSubscribedEvents(url);
+}
+
+async function resetSubscribedEvents(url) {
+    try {
+        const currentEvents = await getSubscribedEvents();
+        if (currentEvents.length > 0) {
+            console.log(`Deleting past subscribed events..`);
+            currentEvents.forEach(async (cur) => {
+                await deleteSubscribedEvent(cur);
+            });
+        }
+        const soberanaIds = [146148785, 590931212, 539161835, 557225670, 40463426, 30865255, 694725890, 502441638, 127274602, 498425402, 49750261];
+        soberanaIds.forEach(async (cur) => {
+            await subscribeToStreamOnline(cur, url);
+        });
+
+        console.info(`Successfuly reseted subscribed events to new ngrok url!`);
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+
 // Start HTTP and HTTPS servers
-function main() {
+async function main() {
     app.listen(port, () => {
         console.log(`🚀 Listening http://localhost:${port}`);
     });
@@ -49,6 +77,8 @@ function main() {
     ).listen(securePort, () => {
         console.log(`🚀 Listening on https://localhost:${securePort}`);
     });
+
+    await startNgrok();
 }
 
 // HTTPS SERVER
@@ -81,6 +111,7 @@ secureApp.post('/eventsub', (req, res) => {
     let hmac = HMAC_PREFIX + getHmac(secret, message);  // Signature to compare
 
     if (true === verifyMessage(hmac, req.headers[TWITCH_MESSAGE_SIGNATURE])) {
+        // ! Need to include more descriptive log of what message came through
         console.log("signatures match");
 
         // Get JSON object from body, so you can process the message.
