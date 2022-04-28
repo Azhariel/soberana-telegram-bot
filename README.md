@@ -7,17 +7,18 @@ de informações. O bot deve postar quando membros iniciam lives na Twitch e pos
 além de postar diariamente as lives e eventos agendadas para aquele dia a partir do Google Calendar.
 
 # Table of Contents
-- [To Do](#to-do)
+- [Soberana Telegram Bot](#soberana-telegram-bot)
+- [Table of Contents](#table-of-contents)
+- [To do](#to-do)
 - [Desafios](#desafios)
   - [Google e OAuth2](#google-e-oauth2)
   - [Twitch e SSL](#twitch-e-ssl)
-  - [Twitch e Subscribed Events](#twitch-e-subscribed-events)
 - [Links Úteis](#links-úteis)
 
 # To do
 ![Telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)
 - [x] Enviar mensagens para um canal especificado no Telegram
-  - [ ] Enviar mensagens a partir de estímulo externo (api/webhook)
+  - [x] Enviar mensagens a partir de estímulo externo (api/webhook)
 
 ![Google](https://img.shields.io/badge/google-4285F4?style=for-the-badge&logo=google&logoColor=white)
 - [ ] Integração com Google Calendar
@@ -53,12 +54,9 @@ As APIs da Google utilizam OAuth2 para autorização, que envolvem um método ma
 O servidor precisa, de alguma forma segura, armazenar ambos os tokens e atualiza-los no banco de dados quando os mesmos são atualizados pela lógica do servidor.
 
 ## Twitch e SSL
-Dada a mudança no sistema de webhooks da Twitch (utilizando agora os endpoints `EventSub`), há obrigatoriedade do servidor utilizar o protocolo SSL - o que, por sua vez, requer que o domínio possua o devido certificado de autoridade. Em fase de testes, estou utilizando [ngrok](https://ngrok.com/), que cria uma URL temporária com o devido certificado, mas essa solução é inviável a nível de produção - tanto por não rodar mais em localhost, quanto por a URL externa ser temporária na versão gratuita.
+Dada a mudança no sistema de webhooks da Twitch (utilizando agora os endpoints `EventSub`), há obrigatoriedade do servidor utilizar o protocolo SSL - o que, por sua vez, requer que o domínio possua o devido certificado de autoridade. Em fase de testes, estou utilizando [ngrok](https://ngrok.com/), que cria uma URL temporária com o devido certificado, mas essa solução é inviável a nível de produção - ou, ao menos, longe do ideal.
 
 Uma das alternativas, que exigem mais estudo, é alguma forma de hospedar na AWS com suporte a certificado SSL, mas não possuo expierência nesse tipo de deploy.
-
-## Twitch e Subscribed Events
-Para subscrever a eventos na Twitch, é enviado uma requisição POST incluindo a URL de callback para esses eventos. Enquanto se utilizar URL variável para expor o servidor via ngrok, mesmo implementada através do próprio node.js (e, portanto, atualizável na lógica do código), a mudança de URL deve também pegar todos eventos já subscritos, desescrever-se e reescrever-se passando a nova URL. Todas essas funções já estão implementadas em algum nível no código, mas é necessário criar essa linha de ligação entre elas. 
 
 # Links Úteis
 - [Telegram API](https://core.telegram.org/bots)
