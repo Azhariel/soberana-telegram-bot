@@ -92,12 +92,3 @@ async function formatStreamOnline(stream) {
 // postTodaysEvents();
 module.exports = { formatTime, formatStreamOnline };
 
-// let testStreamOnlineObject = {
-//     "id": "46215275005",
-//     "broadcaster_user_id": "502441638",
-//     "broadcaster_user_login": "ponzuzuju",
-//     "broadcaster_user_name": "PonzuzuJu",
-//     "type": "live",
-//     "started_at": "2022-04-19T20:00:07Z"
-// }
-// formatStreamOnline(testStreamOnlineObject);
