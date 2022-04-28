@@ -57,7 +57,7 @@ async function postTodaysEvents() {
 }
 
 function characterEscaper(text) {
-    text.replace(/(-)/g, '\\-')
+    return text.replace(/(-)/g, '\\-')
         .replace(/(\.)/g, '\\.')
         .replace(/(!)/g, '\\!')
         .replace(/(\|)/g, '\\|')
@@ -75,8 +75,6 @@ function characterEscaper(text) {
         .replace(/=/g, '\\=')
         .replace(/{/g, '\\{')
         .replace(/}/g, '\\}')
-
-    return text;
 }
 
 async function formatStreamOnline(stream) {
