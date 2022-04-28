@@ -30,7 +30,7 @@ const instance = axios.create({
     },
 })
 
-async function subscribeToStreamOnline(userId) {
+async function subscribeToStreamOnline(userId, ngrokUrl) {
     try {
         await instance.post('/eventsub/subscriptions', {
             "type": "stream.online",
@@ -40,10 +40,11 @@ async function subscribeToStreamOnline(userId) {
             },
             "transport": {
                 "method": "webhook",
-                "callback": `${NGROK_SERVER}/eventsub`,
+                "callback": `${ngrokUrl}/eventsub`,
                 "secret": `${TWITCH_SECRET_KEY}`
             }
         });
+        console.log(`Requested Stream Online sub for ${userId}`);
     } catch (error) {
         console.error(error.response.data);
     }
@@ -57,9 +58,8 @@ async function getSubscribedEvents() {
                 console.log(`Status: ${element.status} | ID: ${element.id} | UserID: ${element.condition.broadcaster_user_id}`);
                 listOfSubscribedEvents.push(element.id);
             });
-            console.log(listOfSubscribedEvents);
-            console.log(`Total: ${listOfSubscribedEvents.length}`)
         });
+        return listOfSubscribedEvents;
     } catch (error) {
         console.error(error);
     }
@@ -80,7 +80,7 @@ async function getUsers(userName) {
 async function deleteSubscribedEvent(eventId) {
     try {
         await instance.delete(`/eventsub/subscriptions?id=${eventId}`).then(reponse => {
-            console.log(reponse.status);
+            console.log(`Event deleted? ${reponse.status}`);
         });
     } catch (error) {
         console.error(error.response.data);
@@ -98,7 +98,6 @@ async function getChannelInfo(userId) {
         console.error(error);
     }
 }
-
 
 // TODO Move all of this to tests
 // getUsers('azhariel&login=c0muninja&login=comuna_paint&login=dadosrevolucionarios&login=0froggy&login=gamerdeesquerda&login=historiapublica&login=historiatopia&login=lucaszawacki&login=ponzuzuju&login=vinnydays');
@@ -129,4 +128,4 @@ async function getChannelInfo(userId) {
 //     deleteSubscribedEvent(e);
 // })
 
-module.exports = { getChannelInfo };
+module.exports = { getChannelInfo, getSubscribedEvents, deleteSubscribedEvent, subscribeToStreamOnline };
