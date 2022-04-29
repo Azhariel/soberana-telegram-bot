@@ -26,7 +26,7 @@ além de postar diariamente as lives e eventos agendadas para aquele dia a parti
   - [x] Retornar as lives do dia
   - [x] Formatar as lives do dia
   - [x] Enviar a agenda diária no telegram
-  - [ ] .. automaticamente
+  - [x] .. automaticamente
   - [ ] Guardar os tokens (access e refresh) e renova-los conforme necessário
 
 ![YouTube](https://img.shields.io/badge/YouTube-%23FF0000.svg?style=for-the-badge&logo=YouTube&logoColor=white)
