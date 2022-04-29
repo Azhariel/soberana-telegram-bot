@@ -44,7 +44,7 @@ async function subscribeToStreamOnline(userId, ngrokUrl) {
                 "secret": `${TWITCH_SECRET_KEY}`
             }
         });
-        console.log(`Requested Stream Online sub for ${userId}`);
+        return userId;
     } catch (error) {
         console.error(error.response.data);
     }

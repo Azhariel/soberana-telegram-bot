@@ -53,11 +53,13 @@ async function resetSubscribedEvents(url) {
             });
         }
         const soberanaIds = [146148785, 590931212, 539161835, 557225670, 40463426, 30865255, 694725890, 502441638, 127274602, 498425402, 49750261];
-        soberanaIds.forEach(async (cur) => {
-            await subscribeToStreamOnline(cur, url);
-        });
 
-        console.info(`Successfuly reseted subscribed events to new ngrok url!`);
+        soberanaIds.forEach(async (cur) => {
+            await subscribeToStreamOnline(cur, url)
+                .then((stream) => console.log(`Requested Stream Online sub for ${stream}`));
+        })
+            .then(() => console.info(`Successfuly reseted subscribed events to new ngrok url!`))
+
     } catch (error) {
         console.error(error.message);
     }
@@ -68,7 +70,7 @@ function scheduleDailyPost() {
     const rule = new schedule.RecurrenceRule();
     rule.hour = 0;
     rule.tz = 'Etc/GMT+3';
-    schedule.scheduleJob(rule, postTodaysEvents());
+    const job = schedule.scheduleJob(rule, () => postTodaysEvents());
 }
 
 // Start HTTP and HTTPS servers
