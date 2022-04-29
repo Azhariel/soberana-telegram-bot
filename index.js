@@ -5,7 +5,8 @@ const crypto = require('crypto');
 const https = require('https');
 const fs = require('fs');
 const ngrok = require('ngrok');
-const { formatStreamOnline } = require('./methods/textFormatters');
+const schedule = require('node-schedule');
+const { formatStreamOnline, postTodaysEvents } = require('./methods/textFormatters');
 const { getSubscribedEvents, deleteSubscribedEvent, subscribeToStreamOnline } = require('./api/twitch');
 
 // * .env
@@ -62,6 +63,14 @@ async function resetSubscribedEvents(url) {
     }
 }
 
+// Runs everyday at 00:00 to post the day's schedule
+function scheduleDailyPost() {
+    const rule = new schedule.RecurrenceRule();
+    rule.hour = 0;
+    rule.tz = 'Etc/GMT+3';
+    schedule.scheduleJob(rule, postTodaysEvents());
+}
+
 // Start HTTP and HTTPS servers
 async function main() {
     app.listen(port, () => {
@@ -79,6 +88,7 @@ async function main() {
     });
 
     await startNgrok();
+    scheduleDailyPost();
 }
 
 // HTTPS SERVER

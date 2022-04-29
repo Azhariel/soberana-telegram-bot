@@ -90,5 +90,5 @@ async function formatStreamOnline(stream) {
 }
 
 // postTodaysEvents();
-module.exports = { formatTime, formatStreamOnline };
+module.exports = { formatTime, formatStreamOnline, postTodaysEvents };
 
