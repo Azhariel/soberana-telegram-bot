@@ -1,4 +1,4 @@
-const { sendMessage } = require('./telegram');
+const { sendMessage } = require('../api/telegram');
 const { getEvents } = require('../api/googleCalendar');
 const { getChannelInfo } = require('../api/twitch');
 

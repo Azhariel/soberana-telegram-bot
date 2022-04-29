@@ -1,13 +1,10 @@
-const { response } = require('express');
-
 require('dotenv').config();
 const axios = require('axios').default;
 
 const { TWITCH_CLIENT_ID,
     TWITCH_CLIENT_SECRET,
     TWITCH_TOKEN,
-    TWITCH_SECRET_KEY,
-    NGROK_SERVER } = process.env;
+    TWITCH_SECRET_KEY } = process.env;
 
 const instance = axios.create({
     baseURL: 'https://api.twitch.tv/helix',
