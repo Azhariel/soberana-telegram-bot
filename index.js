@@ -57,7 +57,7 @@ function scheduleDailyPost() {
     const rule = new schedule.RecurrenceRule();
     rule.hour = 0;
     rule.tz = 'Etc/GMT+3';
-    schedule.scheduleJob(rule, () => postTodaysEvents());
+    job = schedule.scheduleJob(rule, () => postTodaysEvents());
 }
 // * End of auxiliary functions that should be moved somehwere else <--
 
