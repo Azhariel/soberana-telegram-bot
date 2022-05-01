@@ -64,9 +64,13 @@ async function getToken() {
 * Gets refreshed token, sets as credentials.
 */
 async function getRefreshedToken() {
-    const refreshedToken = await oauth2Client.getAccessToken();
-    oauth2Client.setCredentials(refreshedToken.res.data);
-    console.log(`Refresh token status: ${refreshedToken.res.status} ${refreshedToken.res.statusText}`);
+    try {
+        oauth2Client.setCredentials(refreshedToken.res.data);
+        console.log(`Refresh token status: ${refreshedToken.res.status} ${refreshedToken.res.statusText}`);
+        const refreshedToken = await oauth2Client.getAccessToken();
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 /**
