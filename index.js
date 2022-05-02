@@ -39,13 +39,14 @@ async function resetSubscribedEvents(url) {
                 await deleteSubscribedEvent(cur);
             });
         }
-        const soberanaIds = [146148785, 590931212, 539161835, 557225670, 40463426, 30865255, 694725890, 502441638, 127274602, 498425402, 49750261];
 
+        const soberanaIds = [146148785, 590931212, 539161835, 557225670, 40463426, 30865255, 694725890, 502441638, 127274602, 498425402, 49750261];
         soberanaIds.forEach(async (cur) => {
-            await subscribeToStreamOnline(cur, url)
-                .then((stream) => console.log(`Requested Stream Online sub for ${stream}`));
+            const stream = await subscribeToStreamOnline(cur, url);
+            console.log(`Requested Stream Online sub for ${stream}`);
         })
-            .then(() => console.info(`Successfuly reseted subscribed events to new ngrok url!`))
+
+        console.info(`Successfuly reseted subscribed events to new ngrok url!`);
 
     } catch (error) {
         console.error(error.message);
@@ -53,12 +54,10 @@ async function resetSubscribedEvents(url) {
 }
 
 // Runs everyday at 00:00 to post the day's schedule
-function scheduleDailyPost() {
-    const rule = new schedule.RecurrenceRule();
-    rule.hour = 0;
-    rule.tz = 'Etc/GMT+3';
-    job = schedule.scheduleJob(rule, () => postTodaysEvents());
-}
+const rule = new schedule.RecurrenceRule();
+rule.hour = 0;
+rule.tz = 'Etc/GMT+3';
+const job = schedule.scheduleJob(rule, () => postTodaysEvents());
 // * End of auxiliary functions that should be moved somehwere else <--
 
 // Start HTTP and HTTPS servers
@@ -74,7 +73,6 @@ async function main() {
     });
 
     await startNgrok();
-    scheduleDailyPost();
 }
 
 main();
