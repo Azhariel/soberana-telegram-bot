@@ -48,7 +48,7 @@ module.exports = {
             // Get JSON object from body, so you can process the message.
             let notification = JSON.parse(req.body);
             eventCount++;
-            console.log(`${eventCount}. EventSub created for: ${notification.subscription?.condition?.broadcaster_user_id}`);
+            console.log(`${eventCount}. EventSub for: ${notification.subscription?.condition?.broadcaster_user_id}`);
 
             if (MESSAGE_TYPE_NOTIFICATION === req.headers[MESSAGE_TYPE]) {
                 formatStreamOnline(notification.event);
