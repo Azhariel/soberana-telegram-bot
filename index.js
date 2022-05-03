@@ -56,6 +56,7 @@ async function resetSubscribedEvents(url) {
 // Runs everyday at 00:00 to post the day's schedule
 const rule = new schedule.RecurrenceRule();
 rule.hour = 0;
+rule.minute = 0;
 rule.tz = 'Etc/GMT+3';
 const job = schedule.scheduleJob(rule, () => postTodaysEvents());
 // * End of auxiliary functions that should be moved somehwere else <--
