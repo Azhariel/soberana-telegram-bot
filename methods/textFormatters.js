@@ -4,8 +4,10 @@ const { getChannelInfo } = require('../api/twitch');
 
 // * sample obj
 // const livesToday = {
-//     'Live - Gamer de Esquerda': ['2022-04-14T16:00:00-03:00', '2022-04-14T22:00:00-03:00'],
-//     'Aula de Alemão - PonzuzuJu': ['2022-04-14T17:00:00-03:00', '2022-04-14T18:00:00-03:00']
+//     'Aniversário Marx': ['NaN:NaN', 'NaN:NaN'],
+//     'História Pública - Comunews': ['12:00', '14:00'],
+//     'Live - Gamer de Esquerda': ['16:00', '22:00'],
+//     'Aula de Alemão - PonzuzuJu': ['17:00', '18:00']
 // }
 
 // Get current date
@@ -42,11 +44,16 @@ function formatSchedule(schedule) {
     let formattedSchedule = `*Lives de Hoje \\(${dia}\\):*\n`;
     for (let event in schedule) {
         let horarios = schedule[event];
-        cleanEvent = event.replace(/(-)/g, '\\-');
-        formattedSchedule += `\\[${horarios[0]}\\] \\- \\[${horarios[1]}\\]: ${cleanEvent}\n`;
+        let cleanEvent = characterEscaper(event);
+        if (horarios[0] === 'NaN:NaN' || horarios[1] === 'NaN:NaN') {
+            formattedSchedule += `\\[Data Especial\\]: ${cleanEvent}\n`
+        } else {
+            formattedSchedule += `\\[${horarios[0]}\\] \\- \\[${horarios[1]}\\]: ${cleanEvent}\n`;
+        }
     }
     formattedSchedule += `\n_[Siga os canais aqui\\!](https://j\\.mp/twitchSoberana)_`
     console.log(`Sending schedule for ${dia}..`);
+    console.log(`\n${formattedSchedule}`);
     sendMessage(formattedSchedule);
 }
 
