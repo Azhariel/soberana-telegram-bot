@@ -1,99 +1,110 @@
 require('dotenv').config();
 const axios = require('axios').default;
 
-const { TWITCH_CLIENT_ID,
-    TWITCH_CLIENT_SECRET,
-    TWITCH_TOKEN,
-    TWITCH_SECRET_KEY } = process.env;
+const {
+	TWITCH_CLIENT_ID,
+	TWITCH_CLIENT_SECRET,
+	TWITCH_TOKEN,
+	TWITCH_SECRET_KEY,
+} = process.env;
 
 const instance = axios.create({
-    baseURL: 'https://api.twitch.tv/helix',
-    headers: {
-        post: {
-            'Authorization': `Bearer ${TWITCH_TOKEN}`,
-            'Client-Id': `${TWITCH_CLIENT_ID}`,
-            'Content-Type': 'application/json'
-        },
-        get: {
-            'Authorization': `Bearer ${TWITCH_TOKEN}`,
-            'Client-Id': `${TWITCH_CLIENT_ID}`,
-            'Content-Type': 'application/json'
-        },
-        delete: {
-            'Authorization': `Bearer ${TWITCH_TOKEN}`,
-            'Client-Id': `${TWITCH_CLIENT_ID}`,
-            'Content-Type': 'application/json'
-        }
-    },
-})
+	baseURL: 'https://api.twitch.tv/helix',
+	headers: {
+		post: {
+			Authorization: `Bearer ${TWITCH_TOKEN}`,
+			'Client-Id': `${TWITCH_CLIENT_ID}`,
+			'Content-Type': 'application/json',
+		},
+		get: {
+			Authorization: `Bearer ${TWITCH_TOKEN}`,
+			'Client-Id': `${TWITCH_CLIENT_ID}`,
+			'Content-Type': 'application/json',
+		},
+		delete: {
+			Authorization: `Bearer ${TWITCH_TOKEN}`,
+			'Client-Id': `${TWITCH_CLIENT_ID}`,
+			'Content-Type': 'application/json',
+		},
+	},
+});
 
 async function subscribeToStreamOnline(userId, ngrokUrl) {
-    try {
-        await instance.post('/eventsub/subscriptions', {
-            "type": "stream.online",
-            "version": "1",
-            "condition": {
-                "broadcaster_user_id": `${userId}`
-            },
-            "transport": {
-                "method": "webhook",
-                "callback": `${ngrokUrl}/eventsub`,
-                "secret": `${TWITCH_SECRET_KEY}`
-            }
-        });
-        return userId;
-    } catch (error) {
-        console.error(error.response.data);
-    }
+	try {
+		await instance.post('/eventsub/subscriptions', {
+			type: 'stream.online',
+			version: '1',
+			condition: {
+				broadcaster_user_id: `${userId}`,
+			},
+			transport: {
+				method: 'webhook',
+				callback: `${ngrokUrl}/eventsub`,
+				secret: `${TWITCH_SECRET_KEY}`,
+			},
+		});
+		return userId;
+	} catch (error) {
+		console.error(error.response.data);
+	}
 }
 
 async function getSubscribedEvents() {
-    try {
-        let listOfSubscribedEvents = [];
-        await instance.get('/eventsub/subscriptions').then(response => {
-            response.data.data.forEach(element => {
-                console.log(`Status: ${element.status} | ID: ${element.id} | UserID: ${element.condition.broadcaster_user_id}`);
-                listOfSubscribedEvents.push(element.id);
-            });
-        });
-        return listOfSubscribedEvents;
-    } catch (error) {
-        console.error(error);
-    }
+	try {
+		let listOfSubscribedEvents = [];
+		await instance.get('/eventsub/subscriptions').then((response) => {
+			response.data.data.forEach((element) => {
+				console.log(
+					`Status: ${element.status} | ID: ${element.id} | UserID: ${element.condition.broadcaster_user_id}`
+				);
+				listOfSubscribedEvents.push(element.id);
+			});
+		});
+		return listOfSubscribedEvents;
+	} catch (error) {
+		console.error(error);
+	}
 }
 
 async function getUsers(userName) {
-    try {
-        await instance.get(`/users?login=${userName}`).then(response => {
-            for (let userObject of response.data.data) {
-                console.log(`Login: ${userObject['login']} ID: ${userObject['id']} Profile Pic: ${userObject['profile_image_url']}`);
-            }
-        });
-    } catch (error) {
-        console.error(error);
-    }
+	try {
+		await instance.get(`/users?login=${userName}`).then((response) => {
+			for (let userObject of response.data.data) {
+				console.log(
+					`Login: ${userObject['login']} ID: ${userObject['id']} Profile Pic: ${userObject['profile_image_url']}`
+				);
+			}
+		});
+	} catch (error) {
+		console.error(error);
+	}
 }
 
 async function deleteSubscribedEvent(eventId) {
-    try {
-        await instance.delete(`/eventsub/subscriptions?id=${eventId}`).then(reponse => {
-            console.log(`Event deleted? ${reponse.status}`);
-        });
-    } catch (error) {
-        console.error(error.response.data);
-    }
+	try {
+		await instance
+			.delete(`/eventsub/subscriptions?id=${eventId}`)
+			.then((reponse) => {
+				console.log(`Event deleted? ${reponse.status}`);
+			});
+	} catch (error) {
+		console.error(error.response.data);
+	}
 }
 
 async function getChannelInfo(userId) {
-    try {
-        const channelInfo = await instance.get(`/channels?broadcaster_id=${userId}`);
-        console.log("🚀 ~ file: twitch.js ~ line 90 ~ getChannelInfo ~ channelInfo", channelInfo.data.data[0])
-        return channelInfo.data.data[0];
-
-
-    } catch (error) {
-        console.error(error);
-    }
+	try {
+		const channelInfo = await instance.get(
+			`/channels?broadcaster_id=${userId}`
+		);
+		console.log(
+			'🚀 ~ file: twitch.js ~ line 90 ~ getChannelInfo ~ channelInfo',
+			channelInfo.data.data[0]
+		);
+		return channelInfo.data.data[0];
+	} catch (error) {
+		console.error(error);
+	}
 }
 
 // TODO Move all of this to tests
@@ -125,4 +136,9 @@ async function getChannelInfo(userId) {
 //     deleteSubscribedEvent(e);
 // })
 
-module.exports = { getChannelInfo, getSubscribedEvents, deleteSubscribedEvent, subscribeToStreamOnline };
+module.exports = {
+	getChannelInfo,
+	getSubscribedEvents,
+	deleteSubscribedEvent,
+	subscribeToStreamOnline,
+};
