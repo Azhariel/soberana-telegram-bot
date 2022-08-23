@@ -17,10 +17,10 @@ function getToday() {
 
 // Format date day/month/year as YYYY-MM-DD, useful for googleCalendar's getEvents function.
 function formatDate(today) {
-	return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(
+	return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(
 		2,
 		'0'
-	)}-${String(today.getDate()).padStart(2, '0')}`;
+	)}`;
 }
 
 // ? Format time -> might refactor to be a part of formatSchedule
@@ -30,12 +30,8 @@ function formatTime(livesToday) {
 		let inicio = new Date(horarios[0]);
 		let fim = new Date(horarios[1]);
 		// padStart adds 0 at the beggining of the string if getHours/getMinutes returns a single digit
-		horarios[0] = `${String(inicio.getHours()).padStart(2, '0')}:${String(
-			inicio.getMinutes()
-		).padStart(2, '0')}`;
-		horarios[1] = `${String(fim.getHours()).padStart(2, '0')}:${String(
-			fim.getMinutes()
-		).padStart(2, '0')}`;
+		horarios[0] = `${String(inicio.getHours()).padStart(2, '0')}:${String(inicio.getMinutes()).padStart(2, '0')}`;
+		horarios[1] = `${String(fim.getHours()).padStart(2, '0')}:${String(fim.getMinutes()).padStart(2, '0')}`;
 	}
 	formatSchedule(livesToday);
 }
@@ -47,9 +43,7 @@ function formatTime(livesToday) {
  */
 function formatSchedule(schedule) {
 	let dia = getToday();
-	dia = `${String(dia.getDate()).padStart(2, '0')}/${String(
-		dia.getMonth() + 1
-	).padStart(2, '0')}/${dia.getFullYear()}`;
+	dia = `${String(dia.getDate()).padStart(2, '0')}/${String(dia.getMonth() + 1).padStart(2, '0')}/${dia.getFullYear()}`;
 	let formattedSchedule = `*Lives de Hoje \\(${dia}\\):*\n`;
 	for (let event in schedule) {
 		let horarios = schedule[event];

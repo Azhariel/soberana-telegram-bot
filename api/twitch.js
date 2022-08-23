@@ -1,12 +1,7 @@
 require('dotenv').config();
 const axios = require('axios').default;
 
-const {
-	TWITCH_CLIENT_ID,
-	TWITCH_CLIENT_SECRET,
-	TWITCH_TOKEN,
-	TWITCH_SECRET_KEY,
-} = process.env;
+const { TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET, TWITCH_TOKEN, TWITCH_SECRET_KEY } = process.env;
 
 const instance = axios.create({
 	baseURL: 'https://api.twitch.tv/helix',
@@ -54,9 +49,7 @@ async function getSubscribedEvents() {
 		let listOfSubscribedEvents = [];
 		await instance.get('/eventsub/subscriptions').then((response) => {
 			response.data.data.forEach((element) => {
-				console.log(
-					`Status: ${element.status} | ID: ${element.id} | UserID: ${element.condition.broadcaster_user_id}`
-				);
+				console.log(`Status: ${element.status} | ID: ${element.id} | UserID: ${element.condition.broadcaster_user_id}`);
 				listOfSubscribedEvents.push(element.id);
 			});
 		});
@@ -82,11 +75,9 @@ async function getUsers(userName) {
 
 async function deleteSubscribedEvent(eventId) {
 	try {
-		await instance
-			.delete(`/eventsub/subscriptions?id=${eventId}`)
-			.then((reponse) => {
-				console.log(`Event deleted? ${reponse.status}`);
-			});
+		await instance.delete(`/eventsub/subscriptions?id=${eventId}`).then((reponse) => {
+			console.log(`Event deleted? ${reponse.status}`);
+		});
 	} catch (error) {
 		console.error(error.response.data);
 	}
@@ -94,13 +85,8 @@ async function deleteSubscribedEvent(eventId) {
 
 async function getChannelInfo(userId) {
 	try {
-		const channelInfo = await instance.get(
-			`/channels?broadcaster_id=${userId}`
-		);
-		console.log(
-			'🚀 ~ file: twitch.js ~ line 90 ~ getChannelInfo ~ channelInfo',
-			channelInfo.data.data[0]
-		);
+		const channelInfo = await instance.get(`/channels?broadcaster_id=${userId}`);
+		console.log('🚀 ~ file: twitch.js ~ line 90 ~ getChannelInfo ~ channelInfo', channelInfo.data.data[0]);
 		return channelInfo.data.data[0];
 	} catch (error) {
 		console.error(error);

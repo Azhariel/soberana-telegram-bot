@@ -7,11 +7,7 @@ const ngrok = require('ngrok');
 const schedule = require('node-schedule');
 const routes = require('./routes.js');
 const { postTodaysEvents } = require('./methods/textFormatters');
-const {
-	getSubscribedEvents,
-	deleteSubscribedEvent,
-	subscribeToStreamOnline,
-} = require('./api/twitch');
+const { getSubscribedEvents, deleteSubscribedEvent, subscribeToStreamOnline } = require('./api/twitch');
 
 // * .env
 const { NGROK_AUTHTOKEN } = process.env;
@@ -47,8 +43,8 @@ async function resetSubscribedEvents(url) {
 		}
 
 		const soberanaIds = [
-			146148785, 590931212, 539161835, 557225670, 40463426, 30865255, 694725890,
-			502441638, 127274602, 498425402, 49750261,
+			146148785, 590931212, 539161835, 557225670, 40463426, 30865255, 694725890, 502441638, 127274602, 498425402,
+			49750261,
 		];
 		soberanaIds.forEach(async (cur) => {
 			const stream = await subscribeToStreamOnline(cur, url);
