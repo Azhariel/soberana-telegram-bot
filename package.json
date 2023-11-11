@@ -18,7 +18,7 @@
   "homepage": "https://github.com/Azhariel/soberana-telegram-bot#readme",
   "keywords": [],
   "dependencies": {
-    "axios": "^0.26.1",
+    "axios": "^1.6.0",
     "crypto": "^1.0.1",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
